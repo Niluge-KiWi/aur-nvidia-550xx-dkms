@@ -1,5 +1,6 @@
-# Maintainer: Sven-Hendrik Haase <svenstaro@archlinux.org>
-# Maintainer: Thomas Baechler <thomas@archlinux.org>
+# Maintainer: Kimiblock Moe
+# Contributor: Sven-Hendrik Haase <svenstaro@archlinux.org>
+# Contributor: Thomas Baechler <thomas@archlinux.org>
 # Contributor: James Rayner <iphitus@gmail.com>
 # Contributor: Vasiliy Stelmachenok <ventureo@yandex.ru>
 
@@ -10,7 +11,7 @@ pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
-options=('!strip')
+options=('!strip' "!debug")
 makedepends=('patchelf')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=('nvidia-drm-outputclass.conf'
@@ -63,7 +64,7 @@ DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' dkms.conf
 }
 
 package_opencl-550xx-nvidia() {
-    pkgdesc="OpenCL implemention for NVIDIA"
+    pkgdesc="OpenCL implemention for NVIDIA 550"
     depends=('zlib')
     optdepends=('opencl-headers: headers necessary for OpenCL development')
     provides=('opencl-driver')
@@ -80,7 +81,7 @@ package_opencl-550xx-nvidia() {
 }
 
 package_nvidia-550xx-dkms() {
-    pkgdesc="NVIDIA drivers - module sources"
+    pkgdesc="NVIDIA drivers 550 - module sources"
     depends=('dkms' "nvidia-utils=$pkgver" 'libglvnd')
     provides=('NVIDIA-MODULE')
     conflicts=('NVIDIA-MODULE')
@@ -94,7 +95,7 @@ package_nvidia-550xx-dkms() {
 }
 
 package_nvidia-550xx-utils() {
-    pkgdesc="NVIDIA drivers utilities"
+    pkgdesc="NVIDIA drivers 550 utilities"
     depends=('libglvnd' 'egl-wayland')
     optdepends=('nvidia-settings: configuration tool'
                 'xorg-server: Xorg support'
@@ -103,7 +104,7 @@ package_nvidia-550xx-utils() {
     conflicts=('nvidia-libgl')
     provides=('vulkan-driver' 'opengl-driver' 'nvidia-libgl')
     replaces=('nvidia-libgl')
-    install="${pkgname}.install"
+    install="nvidia-utils.install"
 
     cd "${_pkg}"
 
