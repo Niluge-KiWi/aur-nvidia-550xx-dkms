@@ -32,6 +32,7 @@ pkgname = nvidia-550xx-utils
 	provides = vulkan-driver
 	provides = opengl-driver
 	provides = nvidia-libgl
+	provides = nvidia-utils=550.107.02
 	conflicts = nvidia-libgl
 	replaces = nvidia-libgl
 

@@ -102,7 +102,7 @@ package_nvidia-550xx-utils() {
                 'xorg-server-devel: nvidia-xconfig'
                 'opencl-nvidia: OpenCL support')
     conflicts=('nvidia-libgl')
-    provides=('vulkan-driver' 'opengl-driver' 'nvidia-libgl')
+    provides=('vulkan-driver' 'opengl-driver' 'nvidia-libgl' "nvidia-utils=${pkgver}")
     replaces=('nvidia-libgl')
     install="nvidia-utils.install"
 
