@@ -1,4 +1,4 @@
-pkgbase = nvidia-utils
+pkgbase = nvidia-550xx-dkms
 	pkgver = 550.107.02
 	pkgrel = 1
 	url = http://www.nvidia.com/
@@ -6,6 +6,7 @@ pkgbase = nvidia-utils
 	license = custom
 	makedepends = patchelf
 	options = !strip
+	options = !debug
 	source = nvidia-drm-outputclass.conf
 	source = nvidia-utils.sysusers
 	source = nvidia.rules

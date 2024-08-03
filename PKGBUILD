@@ -4,7 +4,7 @@
 # Contributor: James Rayner <iphitus@gmail.com>
 # Contributor: Vasiliy Stelmachenok <ventureo@yandex.ru>
 
-pkgbase=nvidia-utils
+pkgbase=nvidia-550xx-dkms
 pkgname=('nvidia-550xx-utils' 'opencl-550xx-nvidia' 'nvidia-550xx-dkms')
 pkgver=550.107.02
 pkgrel=1
