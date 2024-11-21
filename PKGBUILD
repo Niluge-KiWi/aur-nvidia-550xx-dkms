@@ -1,17 +1,18 @@
-# Maintainer: Kimiblock Moe
+# Maintainer: failsafe65
 # Contributor: Sven-Hendrik Haase <svenstaro@archlinux.org>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 # Contributor: James Rayner <iphitus@gmail.com>
 # Contributor: Vasiliy Stelmachenok <ventureo@yandex.ru>
 
 pkgbase=nvidia-550xx-dkms
-pkgname=('nvidia-550xx-utils' 'opencl-550xx-nvidia' 'nvidia-550xx-dkms')
-pkgver=550.127.05
+pkgname=('nvidia-550xx-utils' 'opencl-nvidia-550xx' 'nvidia-550xx-dkms')
+pkgver=550.135
 pkgrel=1
+pkgdesc="NVIDIA drivers for Linux, 550 branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
-options=('!strip' "!debug")
+options=('!strip')
 makedepends=('patchelf')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=('nvidia-drm-outputclass.conf'
@@ -25,7 +26,7 @@ sha512sums=('de7116c09f282a27920a1382df84aa86f559e537664bb30689605177ce37dc50677
             'f8f071f5a46c1a5ce5188e104b017808d752e61c0c20de1466feb5d693c0b55a5586314411e78cc2ab9c0e16e2c67afdd358da94c0c75df1f8233f54c280762c'
             'a0183adce78e40853edf7e6b73867e7a8ea5dabac8e8164e42781f64d5232fbe869f850ab0697c3718ebced5cde760d0e807c05da50a982071dfe1157c31d6b8'
             '55def6319f6abb1a4ccd28a89cd60f1933d155c10ba775b8dfa60a2dc5696b4b472c14b252dc0891f956e70264be87c3d5d4271e929a4fc4b1a68a6902814cee'
-            'b67364c0911aa4908192846ed855571312c9e29c47cae8c83300caf71a9c8c7277f2a0591f0c0dd669f34464e04cf420a16ec83f5db4875a32c00a678db80d06')
+            '1e93424a527023bd28d9349e1a5afd2053b8c9f20ef8ecd5d185b661bccaec972ffca604b67b0e7fe596a2d1de9d57256f2ec3f1afd1571ac155d06ae7d87f0a')
 
 
 create_links() {
@@ -63,11 +64,12 @@ DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' dkms.conf
     sed -i 's/NV_EXCLUDE_BUILD_MODULES/IGNORE_PREEMPT_RT_PRESENCE=1 NV_EXCLUDE_BUILD_MODULES/' dkms.conf
 }
 
-package_opencl-550xx-nvidia() {
-    pkgdesc="OpenCL implemention for NVIDIA 550"
+package_opencl-nvidia-550xx() {
+    pkgdesc="OpenCL implemention for NVIDIA, 550 branch"
     depends=('zlib')
     optdepends=('opencl-headers: headers necessary for OpenCL development')
-    provides=('opencl-driver')
+    conflicts=('opencl-nvidia')
+    provides=('opencl-nvidia' 'opencl-driver')
     cd "${_pkg}"
 
     # OpenCL
@@ -81,10 +83,10 @@ package_opencl-550xx-nvidia() {
 }
 
 package_nvidia-550xx-dkms() {
-    pkgdesc="NVIDIA drivers 550 - module sources"
-    depends=('dkms' "nvidia-utils=$pkgver" 'libglvnd')
-    provides=('NVIDIA-MODULE')
-    conflicts=('NVIDIA-MODULE')
+    pkgdesc="NVIDIA drivers - module sources, 550 branch"
+    depends=('dkms' "nvidia-utils=${pkgver}" 'libglvnd')
+    provides=("nvidia-dkms=${pkgver}" 'NVIDIA-MODULE' 'nvidia')
+    conflicts=('nvidia-dkms' 'NVIDIA-MODULE' 'nvidia')
 
     cd ${_pkg}
 
@@ -95,16 +97,15 @@ package_nvidia-550xx-dkms() {
 }
 
 package_nvidia-550xx-utils() {
-    pkgdesc="NVIDIA drivers 550 utilities"
+    pkgdesc="NVIDIA drivers utilities, 550 branch"
     depends=('libglvnd' 'egl-wayland')
     optdepends=('nvidia-settings: configuration tool'
                 'xorg-server: Xorg support'
                 'xorg-server-devel: nvidia-xconfig'
                 'opencl-nvidia: OpenCL support')
-    conflicts=('nvidia-libgl')
-    provides=('vulkan-driver' 'opengl-driver' 'nvidia-libgl' "nvidia-utils=${pkgver}")
-    replaces=('nvidia-libgl')
-    install="nvidia-utils.install"
+    conflicts=('nvidia-utils' 'nvidia-libgl' 'egl-gbm')
+    provides=("nvidia-utils=${pkgver}" 'vulkan-driver' 'opengl-driver' 'nvidia-libgl' 'egl-gbm')
+    install="${pkgname}.install"
 
     cd "${_pkg}"
 
@@ -188,8 +189,6 @@ package_nvidia-550xx-utils() {
     install -Dm755 "libnvidia-opticalflow.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-opticalflow.so.${pkgver}"
 
     # Cryptography library wrapper
-    ls libnvidia-pkcs*
-    ls *openssl*
     install -Dm755 "libnvidia-pkcs11.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-pkcs11.so.${pkgver}"
     install -Dm755 "libnvidia-pkcs11-openssl3.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-pkcs11-openssl3.so.${pkgver}"
 
